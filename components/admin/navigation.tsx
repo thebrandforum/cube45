@@ -15,7 +15,7 @@ export default function AdminNavigation() {
     setMounted(true)
     const timer = setInterval(() => {
       setCurrentTime(new Date())
-    }, 60000) // 1분마다 업데이트
+    }, 60000)
 
     return () => clearInterval(timer)
   }, [])
@@ -35,10 +35,9 @@ export default function AdminNavigation() {
   }
 
   const isActive = (path: string) => {
-    return pathname === path || pathname.startsWith(path + '/')
+    return pathname === path
   }
 
-  // 모바일 서브메뉴 토글
   const toggleMobileSubMenu = (menu: string) => {
     setMobileSubMenuOpen(prev => ({
       ...prev,
@@ -69,11 +68,11 @@ export default function AdminNavigation() {
             )}
           </button>
           <h1 className="text-lg font-bold text-gray-800">관리자 페이지</h1>
-          <div className="w-10"></div> {/* 균형을 위한 빈 공간 */}
+          <div className="w-10"></div>
         </div>
       </header>
 
-      {/* 데스크톱 사이드바 */}
+      {/* 데스크탑 사이드바 */}
       <aside className="hidden md:block w-48 bg-white shadow-lg fixed left-0 top-16 bottom-0 overflow-y-auto">
         <div className="p-4">
           <div className="text-lg font-bold text-gray-800 mb-8">관리자</div>
@@ -85,7 +84,7 @@ export default function AdminNavigation() {
               <a 
                 href="/admin/dashboard" 
                 className={`flex items-center p-3 rounded ${
-                  isActive('/admin/dashboard') 
+                  isActive('/admin/dashboard')
                     ? 'text-blue-600 bg-blue-50' 
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
@@ -95,13 +94,12 @@ export default function AdminNavigation() {
                 </svg>
                 대시보드
               </a>
-              {/* 대시보드 하위 메뉴 */}
               <ul className="ml-8 mt-2 space-y-1">
                 <li>
                   <a 
                     href="/admin/dashboard/price-detail" 
                     className={`flex items-center p-2 text-sm rounded ${
-                      pathname === '/admin/dashboard/price-detail'
+                      isActive('/admin/dashboard/price-detail')
                         ? 'text-blue-600 bg-blue-50' 
                         : 'text-gray-600 hover:bg-gray-50'
                     }`}
@@ -114,7 +112,7 @@ export default function AdminNavigation() {
                   <a 
                     href="/admin/dashboard/daily-sales" 
                     className={`flex items-center p-2 text-sm rounded ${
-                      pathname === '/admin/dashboard/daily-sales'
+                      isActive('/admin/dashboard/daily-sales')
                         ? 'text-blue-600 bg-blue-50' 
                         : 'text-gray-600 hover:bg-gray-50'
                     }`}
@@ -127,7 +125,7 @@ export default function AdminNavigation() {
                   <a 
                     href="/admin/dashboard/property-report" 
                     className={`flex items-center p-2 text-sm rounded ${
-                      pathname === '/admin/dashboard/property-report'
+                      isActive('/admin/dashboard/property-report')
                         ? 'text-blue-600 bg-blue-50' 
                         : 'text-gray-600 hover:bg-gray-50'
                     }`}
@@ -142,7 +140,7 @@ export default function AdminNavigation() {
               <a 
                 href="/admin/reservation" 
                 className={`flex items-center p-3 rounded ${
-                  isActive('/admin/reservation') 
+                  isActive('/admin/reservation')
                     ? 'text-blue-600 bg-blue-50' 
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
@@ -157,7 +155,7 @@ export default function AdminNavigation() {
               <a 
                 href="/admin/cancell" 
                 className={`flex items-center p-3 rounded ${
-                  isActive('/admin/cancell') 
+                  isActive('/admin/cancell')
                     ? 'text-blue-600 bg-blue-50' 
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
@@ -170,7 +168,6 @@ export default function AdminNavigation() {
             </li>
           </ul>
 
-          {/* 구분선 추가 */}
           <div className="border-t border-gray-300 my-4"></div>
 
           {/* 페이지 콘텐츠 섹션 */}
@@ -180,7 +177,7 @@ export default function AdminNavigation() {
               <a 
                 href="/admin/content-manage" 
                 className={`flex items-center p-3 rounded ${
-                  pathname === '/admin/content-manage'
+                  isActive('/admin/content-manage')
                     ? 'text-blue-600 bg-blue-50' 
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
@@ -195,7 +192,7 @@ export default function AdminNavigation() {
               <a 
                 href="/admin/content-manage/intro" 
                 className={`flex items-center p-3 rounded ${
-                  pathname === '/admin/content-manage/intro'
+                  isActive('/admin/content-manage/intro')
                     ? 'text-blue-600 bg-blue-50' 
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
@@ -210,7 +207,7 @@ export default function AdminNavigation() {
               <a 
                 href="/admin/content-manage/room-manage" 
                 className={`flex items-center p-3 rounded ${
-                  pathname === '/admin/content-manage/room-manage'
+                  isActive('/admin/content-manage/room-manage')
                     ? 'text-blue-600 bg-blue-50' 
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
@@ -220,12 +217,27 @@ export default function AdminNavigation() {
                 </svg>
                 객실 관리
               </a>
+              <ul className="ml-8 mt-2 space-y-1">
+                <li>
+                  <a 
+                    href="/admin/content-manage/room-manage/roomstate" 
+                    className={`flex items-center p-2 text-sm rounded ${
+                      isActive('/admin/content-manage/room-manage/roomstate')
+                        ? 'text-blue-600 bg-blue-50' 
+                        : 'text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    <span className="mr-2">•</span>
+                    방 막기/열기
+                  </a>
+                </li>
+              </ul>
             </li>
             <li>
               <a 
                 href="/admin/content-manage/various" 
                 className={`flex items-center p-3 rounded ${
-                  pathname === '/admin/content-manage/various'
+                  isActive('/admin/content-manage/various')
                     ? 'text-blue-600 bg-blue-50' 
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
@@ -243,7 +255,6 @@ export default function AdminNavigation() {
             </li>	
           </ul>
 
-          {/* 시계 */}
           <div className="mt-auto pt-8">
             <div className="text-center p-4 bg-blue-50 rounded">
               <p className="text-sm text-gray-600">{mounted ? formatDate(currentTime) : '--.--(-)' }</p>
@@ -259,7 +270,6 @@ export default function AdminNavigation() {
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* 모바일 메뉴 헤더 */}
         <div className="bg-blue-600 p-4 flex justify-between items-center">
           <span className="text-white text-lg font-semibold">관리자 메뉴</span>
           <button
@@ -270,19 +280,16 @@ export default function AdminNavigation() {
           </button>
         </div>
 
-        {/* 모바일 메뉴 아이템 */}
         <nav className="overflow-y-auto h-[calc(100%-144px)]">
-          {/* 예약/매출 섹션 */}
           <div className="px-4 pt-4">
             <div className="text-xs font-bold text-gray-600 mb-2">예약/매출</div>
           </div>
           
           <ul>
-            {/* 대시보드 */}
             <li className="border-b border-gray-200">
               <div
                 className={`px-4 py-3 flex justify-between items-center cursor-pointer ${
-                  isActive('/admin/dashboard') 
+                  pathname.startsWith('/admin/dashboard')
                     ? 'bg-blue-50 text-blue-600' 
                     : 'hover:bg-gray-50 text-gray-700'
                 }`}
@@ -299,14 +306,13 @@ export default function AdminNavigation() {
                 </span>
               </div>
               
-              {/* 대시보드 서브메뉴 */}
               {mobileSubMenuOpen['dashboard'] && (
                 <ul className="bg-gray-50">
                   <li>
                     <a
                       href="/admin/dashboard"
                       className={`block px-12 py-2 text-sm ${
-                        pathname === '/admin/dashboard'
+                        isActive('/admin/dashboard')
                           ? 'text-blue-600 bg-blue-100'
                           : 'text-gray-600 hover:bg-gray-100'
                       }`}
@@ -319,7 +325,7 @@ export default function AdminNavigation() {
                     <a
                       href="/admin/dashboard/price-detail"
                       className={`block px-12 py-2 text-sm ${
-                        pathname === '/admin/dashboard/price-detail'
+                        isActive('/admin/dashboard/price-detail')
                           ? 'text-blue-600 bg-blue-100'
                           : 'text-gray-600 hover:bg-gray-100'
                       }`}
@@ -332,7 +338,7 @@ export default function AdminNavigation() {
                     <a
                       href="/admin/dashboard/daily-sales"
                       className={`block px-12 py-2 text-sm ${
-                        pathname === '/admin/dashboard/daily-sales'
+                        isActive('/admin/dashboard/daily-sales')
                           ? 'text-blue-600 bg-blue-100'
                           : 'text-gray-600 hover:bg-gray-100'
                       }`}
@@ -345,7 +351,7 @@ export default function AdminNavigation() {
                     <a
                       href="/admin/dashboard/property-report"
                       className={`block px-12 py-2 text-sm ${
-                        pathname === '/admin/dashboard/property-report'
+                        isActive('/admin/dashboard/property-report')
                           ? 'text-blue-600 bg-blue-100'
                           : 'text-gray-600 hover:bg-gray-100'
                       }`}
@@ -358,12 +364,11 @@ export default function AdminNavigation() {
               )}
             </li>
 
-            {/* 예약관리 */}
             <li className="border-b border-gray-200">
               <a
                 href="/admin/reservation"
                 className={`px-4 py-3 flex items-center ${
-                  isActive('/admin/reservation') 
+                  isActive('/admin/reservation')
                     ? 'bg-blue-50 text-blue-600' 
                     : 'hover:bg-gray-50 text-gray-700'
                 }`}
@@ -376,12 +381,11 @@ export default function AdminNavigation() {
               </a>
             </li>
 
-            {/* 취소관리 */}
             <li className="border-b border-gray-200">
               <a
                 href="/admin/cancell"
                 className={`px-4 py-3 flex items-center ${
-                  isActive('/admin/cancell') 
+                  isActive('/admin/cancell')
                     ? 'bg-blue-50 text-blue-600' 
                     : 'hover:bg-gray-50 text-gray-700'
                 }`}
@@ -395,18 +399,16 @@ export default function AdminNavigation() {
             </li>
           </ul>
 
-          {/* 페이지 콘텐츠 섹션 */}
           <div className="px-4 pt-4">
             <div className="text-xs font-bold text-gray-600 mb-2">페이지 콘텐츠</div>
           </div>
           
           <ul>
-            {/* 메인 관리 */}
             <li className="border-b border-gray-200">
               <a
                 href="/admin/content-manage"
                 className={`px-4 py-3 flex items-center ${
-                  pathname === '/admin/content-manage'
+                  isActive('/admin/content-manage')
                     ? 'bg-blue-50 text-blue-600'
                     : 'hover:bg-gray-50 text-gray-700'
                 }`}
@@ -419,12 +421,11 @@ export default function AdminNavigation() {
               </a>
             </li>
 
-            {/* CUBE 45 관리 */}
             <li className="border-b border-gray-200">
               <a
                 href="/admin/content-manage/intro"
                 className={`px-4 py-3 flex items-center ${
-                  pathname === '/admin/content-manage/intro'
+                  isActive('/admin/content-manage/intro')
                     ? 'bg-blue-50 text-blue-600'
                     : 'hover:bg-gray-50 text-gray-700'
                 }`}
@@ -437,30 +438,63 @@ export default function AdminNavigation() {
               </a>
             </li>
 
-            {/* 객실 관리 */}
             <li className="border-b border-gray-200">
-              <a
-                href="/admin/content-manage/room-manage"
-                className={`px-4 py-3 flex items-center ${
-                  pathname === '/admin/content-manage/room-manage'
+              <div
+                className={`px-4 py-3 flex justify-between items-center cursor-pointer ${
+                  pathname.startsWith('/admin/content-manage/room-manage')
                     ? 'bg-blue-50 text-blue-600'
                     : 'hover:bg-gray-50 text-gray-700'
                 }`}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => toggleMobileSubMenu('roommanage')}
               >
-                <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                </svg>
-                <span className="font-medium">객실 관리</span>
-              </a>
+                <div className="flex items-center">
+                  <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                  </svg>
+                  <span className="font-medium">객실 관리</span>
+                </div>
+                <span className="text-gray-400">
+                  {mobileSubMenuOpen['roommanage'] ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </span>
+              </div>
+              
+              {mobileSubMenuOpen['roommanage'] && (
+                <ul className="bg-gray-50">
+                  <li>
+                    <a
+                      href="/admin/content-manage/room-manage"
+                      className={`block px-12 py-2 text-sm ${
+                        isActive('/admin/content-manage/room-manage')
+                          ? 'text-blue-600 bg-blue-100'
+                          : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      객실 정보 관리
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/admin/content-manage/room-manage/roomstate"
+                      className={`block px-12 py-2 text-sm ${
+                        isActive('/admin/content-manage/room-manage/roomstate')
+                          ? 'text-blue-600 bg-blue-100'
+                          : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      방 막기/열기
+                    </a>
+                  </li>
+                </ul>
+              )}
             </li>
 
-            {/* 기타 관리 */}
             <li className="border-b border-gray-200">
               <a
                 href="/admin/content-manage/various"
                 className={`px-4 py-3 flex items-center ${
-                  pathname === '/admin/content-manage/various'
+                  isActive('/admin/content-manage/various')
                     ? 'bg-blue-50 text-blue-600'
                     : 'hover:bg-gray-50 text-gray-700'
                 }`}
@@ -475,7 +509,6 @@ export default function AdminNavigation() {
           </ul>
         </nav>
 
-        {/* 모바일 시계 */}
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-blue-50">
           <div className="text-center">
             <p className="text-sm text-gray-600">{mounted ? formatDate(currentTime) : '--.--(-)' }</p>
@@ -484,7 +517,6 @@ export default function AdminNavigation() {
         </div>
       </div>
 
-      {/* 모바일 메뉴 오버레이 */}
       {mobileMenuOpen && (
         <div 
           className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-40"

@@ -76,17 +76,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      
-      {/* 스크롤바 숨기기 스타일 */}
-      <style jsx>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </footer>
   )
 }

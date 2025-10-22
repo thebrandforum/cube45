@@ -314,6 +314,7 @@ export default function LocationPage() {
               price_saturday
             )
           `)
+          .eq('is_available', true)
           .order('zone')
           .order('id')
 
@@ -636,6 +637,18 @@ export default function LocationPage() {
       if (bookedRooms && bookedRooms.length > 0) {
         const bookedRoomIds = bookedRooms.map(r => r.room_id)
         rooms = rooms.filter(room => !bookedRoomIds.includes(room.id))
+      }
+      
+      // 날짜별 막힌 방 필터링 추가
+      const { data: blockedRooms } = await supabase
+        .from('cube45_room_blocks')
+        .select('room_id')
+        .gte('block_date', checkIn)
+        .lt('block_date', checkOut)
+      
+      if (blockedRooms && blockedRooms.length > 0) {
+        const blockedRoomIds = [...new Set(blockedRooms.map(r => r.room_id))]
+        rooms = rooms.filter(room => !blockedRoomIds.includes(room.id))
       }
     }
     
