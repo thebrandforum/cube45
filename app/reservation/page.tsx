@@ -60,8 +60,8 @@ interface ReservationData {
 
 export default function LocationPage() {
   const [activeStep, setActiveStep] = useState(1)
-  const [currentYear, setCurrentYear] = useState(2025)
-  const [currentMonth, setCurrentMonth] = useState(9)
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1)
   const [nights, setNights] = useState(1)
   const [rooms, setRooms] = useState(1)
   const [adults, setAdults] = useState(2)
