@@ -33,8 +33,12 @@ export default function Footer() {
                   <p className="truncate">경기도 가평군 설악면 국수터길 13-1</p>
                   <p className="truncate">사업자번호 : 301-37-28829 | 대표자 : 박언</p>
                   <p className="truncate">예약문의 : 070-5129-1671</p>
-                  <p className="truncate mt-2">온라인 위탁사 : 브랜드파트너스</p>
-                  <p className="truncate">Brand by BRAND FORUM</p>
+                  <p className="truncate mt-2">
+                    온라인 위탁사 : <a href="https://www.brandforum.co.kr/" target="_blank" rel="noopener noreferrer" className="hover:underline">브랜드파트너스</a>
+                  </p>
+                  <p className="truncate">
+                    <a href="https://www.thebrandpartners.co.kr/" target="_blank" rel="noopener noreferrer" className="hover:underline">Brand by BRAND FORUM</a>
+                  </p>
                   <p className="truncate">개인정보관리책임자 : 개인정보관리책임자 | 대표번호 : 02-338-1316</p>
                 </div>
                 
@@ -48,8 +52,12 @@ export default function Footer() {
                   </div>
                   {/* 오른쪽 */}
                   <div>
-                    <p>온라인 위탁사 : 브랜드파트너스</p>
-                    <p>Brand by BRAND FORUM</p>
+                    <p>
+                      온라인 위탁사 : <a href="https://www.brandforum.co.kr/" target="_blank" rel="noopener noreferrer" className="hover:underline">브랜드파트너스</a>
+                    </p>
+                    <p>
+                      <a href="https://www.thebrandpartners.co.kr/" target="_blank" rel="noopener noreferrer" className="hover:underline">Brand by BRAND FORUM</a>
+                    </p>
                     <p>개인정보관리책임자 : 개인정보관리책임자 | 대표번호 : 02-338-1316</p>
                   </div>
                 </div>
