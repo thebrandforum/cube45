@@ -1222,6 +1222,111 @@ export default function RoomManagePage() {
                         </div>
                       </div>
 
+                      {selectedRoom && (
+                        <>
+                          <div className="bg-white rounded-lg shadow p-3 md:p-6">
+                            <div className="space-y-4 md:space-y-6">
+                              
+                              {/* 기본정보 섹션 */}
+                              <div>
+                                <div className="flex justify-between items-center mb-2 md:mb-4">
+                                  <h3 className="text-xs md:text-lg font-medium text-black">기본정보</h3>
+                                  <button
+                                    onClick={() => handleSaveSection(['basic_info_type', 'basic_info_room', 'basic_info_pool'])}
+                                    className="px-2 md:px-4 py-1 md:py-2 bg-blue-600 text-white rounded text-[10px] md:text-sm                       hover:bg-blue-700"
+                                  >
+                                    저장
+                                  </button>
+                                </div>
+                                
+                                <div className="space-y-2 md:space-y-4">
+                                  {/* 객실타입 */}
+                                  <div>
+                                    <label className="block text-[10px] md:text-sm font-medium text-gray-700 mb-1                       md:mb-2">객실타입</label>
+                                    <textarea
+                                      value={editedContents.find(c => c.section_name === 'basic_info_type')?.content || ''}
+                                      onChange={(e) => handleLocalUpdate('basic_info_type', 'content', e.target.value)}
+                                      rows={2}
+                                      className="w-full px-2 py-1 md:px-3 md:py-2 border border-gray-300 rounded text-[11px]                       md:text-base text-black"
+                                      placeholder="예: 독채 풀빌라 (마운틴뷰)"
+                                    />
+                                  </div>
+                      
+                                  {/* 객실구성 */}
+                                  <div>
+                                    <label className="block text-[10px] md:text-sm font-medium text-gray-700 mb-1                       md:mb-2">객실구성</label>
+                                    <textarea
+                                      value={editedContents.find(c => c.section_name === 'basic_info_room')?.content || ''}
+                                      onChange={(e) => handleLocalUpdate('basic_info_room', 'content', e.target.value)}
+                                      rows={2}
+                                      className="w-full px-2 py-1 md:px-3 md:py-2 border border-gray-300 rounded text-[11px]                       md:text-base text-black"
+                                      placeholder="예: 침대룸 2개 (더블사이즈 배드 2개), 화장실 2개"
+                                    />
+                                  </div>
+                      
+                                  {/* 객실크기 (읽기전용) */}
+                                  <div>
+                                    <label className="block text-[10px] md:text-sm font-medium text-gray-700 mb-1                       md:mb-2">객실크기</label>
+                                    <div className="w-full px-2 py-1 md:px-3 md:py-2 border border-gray-300 rounded text-[11px]                       md:text-base text-gray-600 bg-gray-50">
+                                      {editedRooms.find(r => r.id === selectedRoom)?.area || '-'}
+                                    </div>
+                                  </div>
+                      
+                                  {/* 기준/최대인원 (읽기전용) */}
+                                  <div className="grid grid-cols-2 gap-2 md:gap-4">
+                                    <div>
+                                      <label className="block text-[10px] md:text-sm font-medium text-gray-700 mb-1                       md:mb-2">기준인원</label>
+                                      <div className="w-full px-2 py-1 md:px-3 md:py-2 border border-gray-300 rounded text-[11px]                       md:text-base text-gray-600 bg-gray-50">
+                                        {editedRooms.find(r => r.id === selectedRoom)?.standard_capacity || '-'}
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <label className="block text-[10px] md:text-sm font-medium text-gray-700 mb-1                       md:mb-2">최대인원</label>
+                                      <div className="w-full px-2 py-1 md:px-3 md:py-2 border border-gray-300 rounded text-[11px]                       md:text-base text-gray-600 bg-gray-50">
+                                        {editedRooms.find(r => r.id === selectedRoom)?.max_capacity || '-'}
+                                      </div>
+                                    </div>
+                                  </div>
+                      
+                                  {/* 수영장 */}
+                                  <div>
+                                    <label className="block text-[10px] md:text-sm font-medium text-gray-700 mb-1 md:mb-2">수영장</                      label>
+                                    <textarea
+                                      value={editedContents.find(c => c.section_name === 'basic_info_pool')?.content || ''}
+                                      onChange={(e) => handleLocalUpdate('basic_info_pool', 'content', e.target.value)}
+                                      rows={2}
+                                      className="w-full px-2 py-1 md:px-3 md:py-2 border border-gray-300 rounded text-[11px]                       md:text-base text-black"
+                                      placeholder="예: 실내수영장 (가로 6M, 세로 4M, 수심 1.2M)"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                      
+                              {/* 어메니티 섹션 (원래 코드) */}
+                              <div>
+                                <div className="flex justify-between items-center mb-2 md:mb-4">
+                                  <h3 className="text-xs md:text-lg font-medium text-black">어메니티</h3>
+                                  <button
+                                    onClick={() => handleSaveSection(['amenity'])}
+                                    className="px-2 md:px-4 py-1 md:py-2 bg-blue-600 text-white rounded text-[10px] md:text-sm                       hover:bg-blue-700"
+                                  >
+                                    저장
+                                  </button>
+                                </div>
+                                <textarea
+                                  value={getContent('amenity')?.content || ''}
+                                  onChange={(e) => handleLocalUpdate('amenity', 'content', e.target.value)}
+                                  rows={5}
+                                  className="w-full px-2 py-1 md:px-3 md:py-2 border border-gray-300 rounded text-[11px]                       md:text-base text-black"
+                                  placeholder="어메니티 내용을 입력하세요 (줄바꿈으로 구분)"
+                                />
+                              </div>
+                      
+                            </div>
+                          </div>
+                        </>
+                      )}
+
                       {/* 어메니티 섹션 */}
                       <div>
                         <div className="flex justify-between items-center mb-2 md:mb-4">

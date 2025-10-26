@@ -33,7 +33,7 @@ interface Room {
   fireplace: string
 }
 
-export default function C19Page() {
+export default function A5Page() {
   const pathname = usePathname()
   
   // A5 페이지 전용
@@ -260,20 +260,20 @@ export default function C19Page() {
                   <h3 className="text-lg font-medium mb-4 md:mb-0 text-black">기본정보</h3>
                 </div>
                 <div className="col-span-1 md:col-span-3 space-y-3">
-                  {getContent('basic_type')?.content && (
-                    <div className="whitespace-pre-line text-sm md:text-base break-words text-black">객실타입 : {getContent('basic_type')?.content}</div>
+                  {getContent('basic_info_type')?.content && (
+                    <div className="whitespace-pre-line text-sm md:text-base break-words text-black">객실타입 : {getContent('basic_info_type')?.content}</div>
                   )}
-                  {getContent('basic_room')?.content && (
-                    <div className="whitespace-pre-line text-sm md:text-base break-words text-black">객실구성 : {getContent('basic_room')?.content}</div>
+                  {getContent('basic_info_room')?.content && (
+                    <div className="whitespace-pre-line text-sm md:text-base break-words text-black">객실구성 : {getContent('basic_info_room')?.content}</div>
                   )}
-                  {getContent('basic_size')?.content && (
-                    <div className="whitespace-pre-line text-sm md:text-base break-words text-black">객실크기 : {getContent('basic_size')?.content}</div>
+{roomData?.area && (
+                    <div>객실크기 : {roomData.area}</div>
                   )}
                   {roomData && (
                     <div className="whitespace-pre-line text-sm md:text-base break-words text-black">기준 / 최대인원 : {roomData.standard_capacity} / {roomData.max_capacity}</div>
                   )}
-                  {getContent('basic_pool')?.content && (
-                    <div className="whitespace-pre-line text-sm md:text-base break-words text-black">수영장 : {getContent('basic_pool')?.content}</div>
+                  {getContent('basic_info_pool')?.content && (
+                    <div className="whitespace-pre-line text-sm md:text-base break-words text-black">수영장 : {getContent('basic_info_pool')?.content}</div>
                   )}
                 </div>
               </div>
