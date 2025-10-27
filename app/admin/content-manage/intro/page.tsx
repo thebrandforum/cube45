@@ -354,7 +354,7 @@ export default function PageContentsManage() {
         }
         
         // contact 페이지의 링크들은 extra_data에 저장
-        if (activeTab === 'contact' && (content.section_name === 'kakao_link' || content.section_name === 'naver_link')) {
+        if (activeTab === 'contact' && (content.section_name === 'kakao_link' || content.section_name ===   'naver_link')) {
           updateData.extra_data = content.extra_data
         }
         
@@ -669,7 +669,8 @@ export default function PageContentsManage() {
                   <button
                     onClick={() => handleSaveSection([
                       'exclusive_cube', 
-                      'exclusive_cube_image_1',
+                      'exclusive_cube_image',          
+                      'exclusive_cube_image_1',        
                       'exclusive_cube_image_2',
                       'exclusive_cube_image_3',
                       'exclusive_cube_image_4',
@@ -809,7 +810,8 @@ export default function PageContentsManage() {
                   <button
                     onClick={() => handleSaveSection([
                       'exceptional_retreat',
-                      'exceptional_retreat_image_1',
+                      'exceptional_retreat_image',  
+                      'exceptional_retreat_image_1',   
                       'exceptional_retreat_image_2',
                       'exceptional_retreat_image_3',
                       'exceptional_retreat_image_4',
