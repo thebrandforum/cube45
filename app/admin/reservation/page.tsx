@@ -34,8 +34,8 @@ interface Reservation {
   cancelled_at?: string
   customer_request?: string	
   is_deleted?: boolean
-  
 	deleted_at?: string
+  payment_tid?: string
 }
 
 export default function AdminReservation() {
@@ -215,44 +215,74 @@ export default function AdminReservation() {
   }
   
   const toggleReservationStatus = async (reservationId: string, currentStatus: string) => {
-    const newStatus = currentStatus === 'confirmed' ? 'cancelled' : 'confirmed'
-    
-    const confirmMessage = newStatus === 'cancelled' 
-      ? '예약을 취소 상태로 변경하시겠습니까?' 
-      : '취소를 예약완료 상태로 복구하시겠습니까?'
-    
-    if (!confirm(confirmMessage)) {
-      return
-    }
-
-    try {
-      const now = new Date()
-      
-      const updateData: Record<string, string | null> = {
-        status: newStatus,
-        cancelled_at: newStatus === 'cancelled' ? now.toISOString() : null,
-        cancelled_by: newStatus === 'cancelled' ? '관리자' : null
-      }
-
-      const { error } = await supabase
-        .from('cube45_reservations')
-        .update(updateData)
-        .eq('id', reservationId)
-
-      if (error) throw error
-
-      await fetchReservations()
-
-      const successMessage = newStatus === 'cancelled' 
-        ? '예약이 취소 상태로 변경되었습니다.' 
-        : '예약이 예약완료 상태로 복구되었습니다.'
-      alert(successMessage)
-
-    } catch (error) {
-      console.error('예약 상태 업데이트 실패:', error)
-      alert('상태 변경에 실패했습니다. 다시 시도해주세요.')
-    }
+  const newStatus = currentStatus === 'confirmed' ? 'cancelled' : 'confirmed'
+  
+  const confirmMessage = newStatus === 'cancelled' 
+    ? '예약을 취소 상태로 변경하시겠습니까?\n결제금액이 환불됩니다.' 
+    : '취소를 예약완료 상태로 복구하시겠습니까?'
+  
+  if (!confirm(confirmMessage)) {
+    return
   }
+
+  // 해당 예약 찾기
+  const reservation = reservations.find(r => r.id === reservationId)
+  if (!reservation) {
+    alert('예약 정보를 찾을 수 없습니다.')
+    return
+  }
+
+  setLoading(true)
+
+  try {
+    // 취소 처리 시 PG 환불도 함께 처리
+    if (newStatus === 'cancelled' && reservation.payment_tid) {
+      // 1. PG 취소 API 호출
+      const pgResponse = await fetch('https://cubecube45.mycafe24.com/pc/WelCancelAPI.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `tid=${reservation.payment_tid}&price=${reservation.total_amount}`
+      })
+      
+      const pgResult = await pgResponse.json()
+      
+      if (!pgResult.success) {
+        alert('환불 오류입니다. 고객센터에 문의해주세요.')
+        setLoading(false)
+        return
+      }
+    }
+
+    // 2. DB 업데이트
+    const now = new Date()
+    
+    const updateData: Record<string, string | null> = {
+      status: newStatus,
+      cancelled_at: newStatus === 'cancelled' ? now.toISOString() : null,
+      cancelled_by: newStatus === 'cancelled' ? '관리자' : null
+    }
+
+    const { error } = await supabase
+      .from('cube45_reservations')
+      .update(updateData)
+      .eq('id', reservationId)
+
+    if (error) throw error
+
+    await fetchReservations()
+
+    const successMessage = newStatus === 'cancelled' 
+      ? '예약이 취소되었습니다.' 
+      : '예약이 예약완료 상태로 복구되었습니다.'
+    alert(successMessage)
+
+  } catch (error) {
+    console.error('예약 상태 업데이트 실패:', error)
+    alert('상태 변경에 실패했습니다. 다시 시도해주세요.')
+  } finally {
+    setLoading(false)
+  }
+}
 
   const getStatusDisplay = (status: string) => {
     const statusMap: Record<string, { text: string; class: string }> = {

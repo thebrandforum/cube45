@@ -2,7 +2,7 @@
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import { useState } from 'react'
-import { getReservationByNameAndPhone, cancelReservationByInfo, cancelReservationById } from '@/api/confirm'
+import { getReservationByNameAndPhone, cancelReservationById } from '@/api/confirm'
 
 interface Reservation {
   id: string | number
@@ -29,6 +29,7 @@ interface Reservation {
   options_fee: number
   total_amount: number
   status: string
+  payment_tid?: string  // 결제 TID 추가
 }
 
 export default function ConfirmPage() {
@@ -38,7 +39,7 @@ export default function ConfirmPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [showResults, setShowResults] = useState(false)
   
-  // 전화번호 포맷팅 함수 추가
+  // 전화번호 포맷팅 함수
   const formatPhoneDisplay = (phone: string): string => {
     const numbers = phone.replace(/[^0-9]/g, '');
     if (numbers.length <= 3) return numbers;
@@ -73,16 +74,52 @@ export default function ConfirmPage() {
       return
     }
 
-    if (confirm('정말 예약을 취소하시겠습니까?')) {
+    // 해당 예약 찾기
+    const reservation = reservations.find(r => r.id === reservationId)
+    if (!reservation) {
+      alert('예약 정보를 찾을 수 없습니다.')
+      return
+    }
+
+    // TID 확인
+    if (!reservation.payment_tid) {
+      alert('결제 정보를 찾을 수 없습니다.\n관리자에게 문의해주세요.')
+      return
+    }
+
+    if (confirm('정말 예약을 취소하시겠습니까?\n결제금액이 환불됩니다.')) {
       setIsLoading(true)
-      const result = await cancelReservationById(reservationId)
       
-      if (result.success) {
-        alert('예약이 성공적으로 취소되었습니다.')
-        handleSearch()  // 목록 새로고침
-      } else {
-        alert('취소할 예약을 찾을 수 없습니다.')
+      try {
+        // 1. PG 취소 API 호출
+        const pgResponse = await fetch('https://cubecube45.mycafe24.com/pc/WelCancelAPI.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `tid=${reservation.payment_tid}&price=${reservation.total_amount}`
+        })
+        
+        const pgResult = await pgResponse.json()
+
+        if (!pgResult.success) {
+          alert('환불 오류입니다. 고객센터에 문의해주세요.')
+          setIsLoading(false)
+          return
+        }
+
+        // 2. DB 취소
+        const result = await cancelReservationById(reservationId)
+        
+        if (result.success) {
+          alert('예약이 성공적으로 취소되었습니다.')
+          handleSearch()  // 목록 새로고침
+        } else {
+          alert('결제 취소는 완료되었으나 예약 상태 업데이트에 실패했습니다.\n관리자에게 문의해주세요.')
+        }
+      } catch (error) {
+        alert('취소 처리 중 오류가 발생했습니다.')
+        console.error(error)
       }
+      
       setIsLoading(false)
     }
   }
@@ -162,7 +199,7 @@ export default function ConfirmPage() {
               {showResults && reservations.length > 0 && (
                 <div className="mt-6 md:mt-8 border-t pt-6 md:pt-8">
                   <h3 className="text-lg md:text-xl font-bold mb-4 md:mb-6 text-center text-gray-800">예약 정보</h3>
-                  {reservations.map((reservation, index) => (
+                  {reservations.map((reservation) => (
                     <div key={reservation.id} className="mb-4 md:mb-6 bg-white rounded-lg shadow-md border overflow-hidden relative">
                       {/* 취소됨 대각선 스탬프 */}
                       {reservation.status === 'cancelled' && (
